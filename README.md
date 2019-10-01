@@ -68,7 +68,7 @@
 
 You can clone the project from here:
 
-https://github.com/corda/derivhack/tree/release/01.10.2019
+https://github.com/corda/barclays-derivhack/
 
 ##### Load Project in Dev Env - IntelliJ
 
