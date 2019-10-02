@@ -3,7 +3,7 @@
 * Pre-requisites
     * This project uses Corda 4.1 to take advantage of reference states
     * As a consequence this project uses Kotlin 1.3
-    * This project uses ISDA CDM 2.4.7
+    * This project uses ISDA CDM 2.5.4
     
     For more info see https://docs.corda.net/getting-set-up.html.
 
@@ -15,7 +15,6 @@
     * `Affirmation` A class to specify a trade affirmation.
     * `Confirmation` A class to specify a trade confirmation.
 
-    
 * Each `Event` has two key fields:
     * `primitive`, defining the type of the event and the changes it causes
     * `lineage`, defining which contracts and other events are related to this event
@@ -55,7 +54,6 @@
     * getAffirmedExecutions
     * getConfirmedExecutions
     * getAffirmations
-    * getConfirmations
     
     Please refer to the derivhack.1.2.jpeg under doc for a visualisation of the CDM events on Corda
     
@@ -68,7 +66,7 @@
 
 You can clone the project from here:
 
-https://github.com/corda/barclays-derivhack/
+https://github.com/corda/barclays-derivhack
 
 ##### Load Project in Dev Env - IntelliJ
 
@@ -191,8 +189,8 @@ The static webpage is served on:
 
 * Processing an Event 
 
- To process an event like Execution for example you should create a POST request to http://localhost:10050 or http://localhost:10060 depending on which party is the flow initializer with the JSONs provided in "allSampleFiles/2.4.14" ("UC1_block_execute_BT1.json") directory in the project
-  to /execution 
+ To process an event like Execution for example you should create a POST request to http://localhost:10050 or http://localhost:10060 depending
+  on which party is the flow initializer with the JSONs provided for the competition ("UC1_block_execute_BT1.json") to /execution 
  
 * List all execution events
 
@@ -202,8 +200,7 @@ You can get all execution states on http://localhost:10050/execution-states or b
 
 You should extend this template as follows:
 
-    * Add your own state and contract definitions under `contracts/src/main/kotlin/`
-    * Add your own flow definitions under `workflows/src/main/kotlin/`
+    * Add your own flow, state and contract definitions under `cdm-support-contracts-states/src/main/kotlin/`
     * Extend or replace the client and webserver under `clients/src/main/kotlin/`
 
     

@@ -1,0 +1,80 @@
+repositories {
+    mavenLocal()
+    jcenter()
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+    maven { url 'https://ci-artifactory.corda.r3cev.com/artifactory/corda-releases' }
+    maven { url 'https://ci-artifactory.corda.r3cev.com/artifactory/corda-dev' }
+    flatDir { dirs "${project.rootProject.projectDir}/lib/dependencies" }
+}
+
+apply plugin: 'org.jetbrains.kotlin.jvm'
+apply plugin: 'org.springframework.boot'
+
+sourceSets {
+    main {
+        resources {
+            srcDir rootProject.file("config/dev")
+        }
+    }
+}
+
+dependencies {
+
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+
+    // Corda dependencies.
+    compile "$corda_release_group:corda-rpc:$corda_release_version"
+
+    // CorDapp dependencies.
+    //compile project(":cdm-support")
+    compile project(":cdm-support-contracts-states")
+    compile project(":cordapp")
+
+    // https://mvnrepository.com/artifact/org.modelmapper/modelmapper
+    compile group: 'org.modelmapper', name: 'modelmapper', version: '0.7.5'
+
+    // https://mvnrepository.com/artifact/net.corda/corda-jackson
+    compile group: 'net.corda', name: 'corda-jackson', version: '4.1'
+
+    // https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp
+    compile group: 'com.squareup.okhttp3', name: 'okhttp', version: '3.9.1'
+
+    compile("org.springframework.boot:spring-boot-starter-websocket:$spring_boot_version") {
+        exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
+    }
+
+}
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+        languageVersion = "1.3"
+        apiVersion = "1.3"
+        jvmTarget = "1.8"
+        javaParameters = true   // Useful for reflection.
+    }
+}
+
+springBoot {
+    mainClassName = "com.derivhack.webserver.ServerKt"
+}
+
+task runTemplateClient(type: JavaExec, dependsOn: assemble) {
+    classpath = sourceSets.main.runtimeClasspath
+    main = 'com.derivhack.ClientKt'
+    args 'localhost:10006', 'user1', 'test'
+}
+
+task runServerB1(type: JavaExec, dependsOn: assemble) {
+    classpath = sourceSets.main.runtimeClasspath
+    main = 'com.derivhack.webserver.ServerKt'
+    args '--server.port=10050', '--config.rpc.host=localhost', '--config.rpc.port=10009', '--config.rpc.username=user2', '--config.rpc.password=test', '--config.sshd.port=2223'
+}
+
+task runServerC1(type: JavaExec, dependsOn: assemble) {
+    classpath = sourceSets.main.runtimeClasspath
+    main = 'com.derivhack.webserver.ServerKt'
+    args '--server.port=10060', '--config.rpc.host=localhost', '--config.rpc.port=10006', '--config.rpc.username=user1', '--config.rpc.password=test', '--config.sshd.port=2224'
+}
+
+
+
