@@ -1,5 +1,5 @@
 #!/bin/bash
-jar fx ../lib/dependencies/cdm-2.5.4.jar
+jar fx ../lib/dependencies/cdm-2.5.11.jar
 find org/isda/cdm -type f -iname "*.class" | sort -u > output1.txt
 
 cat output1.txt | while read -r line

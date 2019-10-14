@@ -1,0 +1,35 @@
+{
+  "PortfolioInstructions": {
+    "PortfolioDate": "2019-10-17",
+    "Client": {
+      "account": {
+        "accountName": {
+          "value": "Client1_ACT#0"
+        },
+        "accountNumber": {
+          "value": "Client1_ACT#0_NQQVRTLFIT4HZ"
+        }
+      },
+      "name": {
+        "value": "Client1"
+      },
+      "partyId": [
+        {
+          "value": "Client1_ID#0_NH90YY6QYVYHM"
+        }
+      ]
+    },
+    "security": {
+      "bond": {
+        "productIdentifier": {
+          "identifier": [
+            {
+              "value": "DH0371475458"
+            }
+          ],
+          "source": "CUSIP"
+        }
+      }
+    }
+  }
+}

@@ -6,6 +6,6 @@ class ExecutionTest : BaseEventTest() {
 
     @Test
     fun execution() {
-        sendNewTradeInAndCheckAssertions("UC1_block_execute_BT1.json")
+        sendNewTradeInAndCheckAssertions("UC1_Block_Trade_BT1.json")
     }
 }

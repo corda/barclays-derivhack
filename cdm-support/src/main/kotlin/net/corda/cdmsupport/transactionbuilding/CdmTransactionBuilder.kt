@@ -5,6 +5,7 @@ import net.corda.cdmsupport.ExecutionAlreadyExists
 import net.corda.cdmsupport.eventparsing.serializeCdmObjectIntoJson
 import net.corda.cdmsupport.extensions.*
 import net.corda.cdmsupport.states.ExecutionState
+import net.corda.cdmsupport.states.TransferState
 import net.corda.cdmsupport.vaultquerying.CdmVaultQuery
 import net.corda.core.contracts.ContractClassName
 import net.corda.core.contracts.ContractState
@@ -25,7 +26,9 @@ class CdmTransactionBuilder(notary: Party? = null,
     init {
 
         event.primitive.allocation?.forEach { processAllocationPrimitive(it) }
+        event.primitive.transfer?.forEach { processTransferPrimitive(it) }
         event.primitive.execution?.forEach { processeExecutionPrimitive(it) }
+
     }
 
     @Throws(RuntimeException::class)
@@ -49,6 +52,13 @@ class CdmTransactionBuilder(notary: Party? = null,
                 addCommand(CDMEvent.Commands.Execution(outputIndexOnAfter), it.participants.map { p -> p.owningKey }.toSet().toList())
             }
         }
+    }
+
+    private fun processTransferPrimitive(transferPrimitive: TransferPrimitive) {
+        val outputTransferState = createTransferState(transferPrimitive)
+        val outputTransferIndex = addOutputStateReturnIndex(outputTransferState, CDMEvent.ID)
+
+        addCommand(CDMEvent.Commands.Transfer(outputTransferIndex), this.outputStates().flatMap { it.data.participants }.map { it.owningKey }.toSet().toList())
     }
 
     private fun processeExecutionPrimitive(executionPrimitive: ExecutionPrimitive) {
@@ -91,6 +101,14 @@ class CdmTransactionBuilder(notary: Party? = null,
         return ExecutionState(json, event.meta.globalKey, AffirmationStatusEnum.UNAFFIRMED.name, participants, UniqueIdentifier())
     }
 
+    private fun createTransferState(transfer: TransferPrimitive): TransferState {
+        val json = serializeCdmObjectIntoJson(transfer)
+        val participants = transfer.mapPartyToCordaX500(serviceHub!!, event.lineage.executionReference[0].globalReference)
+
+        return TransferState(json, event.lineage.eventReference[0].globalReference,
+                event.lineage.executionReference[0].globalReference, participants, UniqueIdentifier())
+    }
+
     private fun indexOfCurrentOutputState(): Int {
         return outputStates().size - 1
     }
@@ -98,5 +116,4 @@ class CdmTransactionBuilder(notary: Party? = null,
     private fun getAllParticipantsAcrossAllInputsAndOutputs(): List<AbstractParty> {
         return (participantsFromInputs + outputStates().flatMap { it.data.participants }.toSet()).toList()
     }
-
 }

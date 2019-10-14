@@ -47,4 +47,3 @@ class TestFlowInitiated(val flowSession: FlowSession) : FlowLogic<SignedTransact
         return subFlow(ReceiveFinalityFlow(otherSideSession = flowSession, expectedTxId = signedId.id))
     }
 }
-

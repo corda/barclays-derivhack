@@ -1,0 +1,58 @@
+{
+  "CollateralInstructions": {
+    "EventDate": "2019-10-17",
+    "Client": {
+      "account": {
+        "accountName": {
+          "value": "Client1_ACT#0"
+        },
+        "accountNumber": {
+          "value": "Client1_ACT#0_NQQVRTLFIT4HZ"
+        }
+      },
+      "name": {
+        "value": "Client1"
+      },
+      "partyId": [
+        {
+          "value": "Client1_ID#0_NH90YY6QYVYHM"
+        }
+      ]
+    },
+    "ClientSegregated": {
+      "account": {
+        "accountName": {
+          "value": "Client1_ACT#8"
+        },
+        "accountNumber": {
+          "value": "Client1_ACT#8_8SI1G6PUNY9DJ"
+        }
+      },
+      "name": {
+        "value": "Client1"
+      },
+      "partyId": [
+        {
+          "value": "Client1_ID#8_EX8XKP4E2WVIE"
+        }
+      ]
+    },
+    "security": {
+      "bond": {
+        "productIdentifier": {
+          "identifier": [
+            {
+              "value": "DH0371475458"
+            }
+          ],
+          "source": "CUSIP"
+        }
+      }
+    },
+    "NetIM": {
+      "Quantity": {
+        "amount": 150000.00
+      }
+    } 
+  }
+}
