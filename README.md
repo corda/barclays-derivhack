@@ -3,7 +3,7 @@
 * Pre-requisites
     * This project uses Corda 4.1 to take advantage of reference states
     * As a consequence this project uses Kotlin 1.3
-    * This project uses ISDA CDM 2.5.4
+    * This project uses ISDA CDM 2.5.11
     
     For more info see https://docs.corda.net/getting-set-up.html.
 
@@ -15,6 +15,7 @@
     * `Affirmation` A class to specify a trade affirmation.
     * `Confirmation` A class to specify a trade confirmation.
 
+    
 * Each `Event` has two key fields:
     * `primitive`, defining the type of the event and the changes it causes
     * `lineage`, defining which contracts and other events are related to this event
@@ -54,8 +55,9 @@
     * getAffirmedExecutions
     * getConfirmedExecutions
     * getAffirmations
+    * getConfirmations
     
-    Please refer to the derivhack.1.2.jpeg under doc for a visualisation of the CDM events on Corda
+    Please refer to the Derivhack2019.jpeg under doc for a visualisation of the CDM events on Corda
     
 * The project has been written entirely in test driven development and the tests in this project are the most accurate documentation of the code. The tests use samples provided by ISDA/Regnosys wherever possible.
 
@@ -66,7 +68,7 @@
 
 You can clone the project from here:
 
-https://github.com/corda/barclays-derivhack
+https://github.com/corda/derivhack/tree/release/01.10.2019
 
 ##### Load Project in Dev Env - IntelliJ
 
@@ -97,6 +99,10 @@ and set the run directory to the project root directory for each test.
 * Run `./gradlew deployNodes` command after the build has been successful  
 
 ##### Running the nodes
+
+NOTE: runnodes.bat isn't a very reliable approach to run the nodes, mostly suitable for testing networks with 2-3 nodes,
+since in this case its opening up a lot of terminals at times the command to run the node gets executed before the terminal window has opened.
+The better way to run the nodes is the use the java -jar corda.jar command by going into the nodes directory.
 
 There are currently 5 nodes working with the app that needs being started
 
@@ -189,8 +195,8 @@ The static webpage is served on:
 
 * Processing an Event 
 
- To process an event like Execution for example you should create a POST request to http://localhost:10050 or http://localhost:10060 depending
-  on which party is the flow initializer with the JSONs provided for the competition ("UC1_block_execute_BT1.json") to /execution 
+ To process an event like Execution for example you should create a POST request to http://localhost:10050 or http://localhost:10060 depending on which party is the flow initializer with the JSONs provided in "allSampleFiles/2.4.14" ("UC1_block_execute_BT1.json") directory in the project
+  to /execution 
  
 * List all execution events
 
@@ -200,7 +206,8 @@ You can get all execution states on http://localhost:10050/execution-states or b
 
 You should extend this template as follows:
 
-    * Add your own flow, state and contract definitions under `cdm-support-contracts-states/src/main/kotlin/`
+    * Add your own state and contract definitions under `contracts/src/main/kotlin/`
+    * Add your own flow definitions under `workflows/src/main/kotlin/`
     * Extend or replace the client and webserver under `clients/src/main/kotlin/`
 
     

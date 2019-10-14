@@ -1,0 +1,43 @@
+{
+  "aggregationParameters" : {
+    "dateTime" : "2019-10-17T10:10:00-04:00",
+    "party" : [ {
+      "globalReference" : "1hVtnR6iJVA3R/1j0Iy8kwp1WKMU7aFPrm1K3Gx6Q9E="
+    } ],
+    "product" : [ {
+      "security" : {
+        "bond" : {
+          "productIdentifier" : {
+            "identifier" : [ {
+              "value" : "DH0371475458"
+            } ],
+            "source" : "CUSIP"
+          }
+        }
+      }
+    } ]
+  },
+  "portfolioState" : {
+    "lineage" : { },
+    "meta" : {
+      "globalKey" : "LJIE0AKy1kKR6+jtvsrEDj7RDwHPdMT2KSFU9JOL+tk="
+    },
+    "positions" : [ {
+      "product" : {
+        "security" : {
+          "bond" : {
+            "productIdentifier" : {
+              "identifier" : [ {
+                "value" : "DH0371475458"
+              } ],
+              "source" : "CUSIP"
+            }
+          }
+        }
+      },
+      "quantity" : {
+        "amount" : 0.0
+      }
+    } ]
+  }
+}

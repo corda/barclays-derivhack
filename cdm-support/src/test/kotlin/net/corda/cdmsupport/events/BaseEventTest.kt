@@ -13,7 +13,6 @@ import net.corda.testing.node.internal.InternalMockNetwork
 import net.corda.testing.node.internal.TestStartedNode
 import net.corda.testing.node.internal.cordappsForPackages
 import net.corda.testing.node.internal.startFlow
-import org.isda.cdm.Execution
 import org.junit.After
 import org.junit.Before
 import kotlin.test.assertEquals
@@ -52,6 +51,7 @@ abstract class BaseEventTest(val samplesDirectory: String = "jsons") {
 
 
     protected fun sendNewTradeInAndCheckAssertions(jsonFileName: String) {
+
         val newTradeEvent = readEventFromJson("/${samplesDirectory}/$jsonFileName")
         val future = node2.services.startFlow(TestFlowInitiating(newTradeEvent)).resultFuture
         val tx = future.getOrThrow().toLedgerTransaction(node2.services)
@@ -61,7 +61,6 @@ abstract class BaseEventTest(val samplesDirectory: String = "jsons") {
         //look closer at the states
         val executionState = tx.outputStates.find { it is ExecutionState } as ExecutionState
         assertNotNull(executionState)
-        //assertEquals(newTradeEvent.primitive.execution[0].after.execution, executionState.execution())
         assertEquals(listOf(party2, party3), executionState.participants)
 
         //look closer at the commands
@@ -69,6 +68,45 @@ abstract class BaseEventTest(val samplesDirectory: String = "jsons") {
         assertEquals(listOf(party2.owningKey, party3.owningKey), tx.commands.get(0).signers)
     }
 
+    protected fun sendAllocationAndCheckAssertions(jsonFileName: String) {
+
+        //----------------allocation
+        val allocationEvent = readEventFromJson("/${samplesDirectory}/$jsonFileName")
+        val future = node2.services.startFlow(TestFlowInitiating(allocationEvent)).resultFuture
+        val tx = future.getOrThrow().toLedgerTransaction(node2.services)
+        checkTheBasicFabricOfTheTransaction(tx, 1, 3, 0, 3)
+
+        //look closer at the states
+        //val executionInputState = tx.inputStates.find { it is ExecutionState } as ExecutionState
+        //val cdmExecutionInputState = executionInputState.execution()
+        //assertNotNull(cdmExecutionInputState)
+//        checkIdentiferIsOnTrade(cdmExecutionInputState, "W3S0XZGEM4S82", "3vqQOOnXah+v+Cwkdh/hSyDP7iD6lLGqRDW/500GvjU=")
+
+        val executionStateOutputStateOne = tx.outputStates[0] as ExecutionState
+        val executionStateOutputStateTwo = tx.outputStates[1] as ExecutionState
+        val executionStateOutputStateThree = tx.outputStates[2] as ExecutionState
+
+
+        assertNotNull(executionStateOutputStateOne)
+        assertNotNull(executionStateOutputStateTwo)
+        assertNotNull(executionStateOutputStateThree)
+
+        val cdmExecutionStateOutputStateOne = executionStateOutputStateOne.execution()
+        val cdmExecutionStateOutputStateTwo = executionStateOutputStateTwo.execution()
+        val cdmExecutionStateOutputStateThree = executionStateOutputStateThree.execution()
+
+
+        assertNotNull(cdmExecutionStateOutputStateOne)
+        assertNotNull(cdmExecutionStateOutputStateTwo)
+        assertNotNull(cdmExecutionStateOutputStateThree)
+//        checkIdentiferIsOnTrade(cdmExecutionStateOutputStateOne, "W3S0XZGEM4S82", "3vqQOOnXah+v+Cwkdh/hSyDP7iD6lLGqRDW/500GvjU=")
+//        checkIdentiferIsOnTrade(cdmExecutionStateOutputStateTwo, "ST2K6U8RHX7MZ", "3vqQOOnXah+v+Cwkdh/hSyDP7iD6lLGqRDW/500GvjU=")
+
+        //look closer at the commands
+        assertEquals(listOf(party2.owningKey, party3.owningKey), tx.commands.get(0).signers)
+        assertEquals(listOf(party1.owningKey, party2.owningKey), tx.commands.get(1).signers)
+        assertEquals(listOf(party1.owningKey, party2.owningKey), tx.commands.get(2).signers)
+    }
 
     //confirming things
     protected fun checkTheBasicFabricOfTheTransaction(tx: LedgerTransaction, numInputStates: Int, numOutputStates: Int, numReferenceStates: Int, numCommands: Int) {
@@ -76,10 +114,6 @@ abstract class BaseEventTest(val samplesDirectory: String = "jsons") {
         assertEquals(numReferenceStates, tx.referenceStates.size)
         assertEquals(numOutputStates, tx.outputStates.size)
         assertEquals(numCommands, tx.commands.size)
-    }
-
-    protected fun checkIdentiferIsOnTrade(cdmExecutionInputState: Execution, identifier: String, issuerReference: String) {
-        assertTrue(cdmExecutionInputState.identifier.any { it.issuerReference.globalReference == issuerReference && it.assignedIdentifier[0].identifier.value == identifier })
     }
 }
 
