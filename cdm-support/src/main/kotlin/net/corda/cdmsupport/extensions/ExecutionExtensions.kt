@@ -25,15 +25,8 @@ fun Execution.createExecutionWithPartiesFromEvent(event: Event) : Execution {
 
 fun Execution.mapPartyToCordaX500ForExecution(serviceHub : ServiceHub) : List<Party>{
 
-    //We're excluding the client from this trade
-    val client = this.partyRole
-            .filter { it.role == PartyRoleEnum.CLIENT }
-            .map { it.partyReference.globalReference }
-
     val parties : MutableSet<Party> = mutableSetOf()
-    this.party
-            .filter { !client.contains(it.globalReference) }
-            .forEach { parties.add(serviceHub.identityService
+    this.party.forEach { parties.add(serviceHub.identityService
             .wellKnownPartyFromX500Name(CordaX500Name.parse("O=${it.value.name.value},L=New York,C=US"))!!) }
 
     return parties.toList()
@@ -41,15 +34,8 @@ fun Execution.mapPartyToCordaX500ForExecution(serviceHub : ServiceHub) : List<Pa
 
 fun Execution.mapPartyToCordaX500ForAllocation(serviceHub : ServiceHub) : List<Party>{
 
-    //We're excluding the counterparty broker from this trade
-    val client = this.partyRole
-            .filter { it.role == PartyRoleEnum.COUNTERPARTY }
-            .map { it.partyReference.globalReference }
-
     val parties : MutableSet<Party> = mutableSetOf()
-    this.party
-            .filter { !client.contains(it.globalReference) }
-            .forEach { parties.add(serviceHub.identityService
+    this.party.forEach { parties.add(serviceHub.identityService
             .wellKnownPartyFromX500Name(CordaX500Name.parse("O=${it.value.name.value},L=New York,C=US"))!!) }
 
     return parties.toList()
