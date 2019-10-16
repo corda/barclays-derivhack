@@ -15,7 +15,6 @@
     * `Affirmation` A class to specify a trade affirmation.
     * `Confirmation` A class to specify a trade confirmation.
 
-    
 * Each `Event` has two key fields:
     * `primitive`, defining the type of the event and the changes it causes
     * `lineage`, defining which contracts and other events are related to this event
@@ -31,7 +30,7 @@
     * `Reset`
     * `TermsChange`
     * `Transfer`
-  
+
 
 * Mapping CDM on Corda
 
@@ -100,11 +99,16 @@ and set the run directory to the project root directory for each test.
 
 ##### Running the nodes
 
-NOTE: runnodes.bat isn't a very reliable approach to run the nodes, mostly suitable for testing networks with 2-3 nodes,
-since in this case its opening up a lot of terminals at times the command to run the node gets executed before the terminal window has opened.
-The better way to run the nodes is the use the java -jar corda.jar command by going into the nodes directory.
+NOTE: runnodes.bat isn't a very reliable approach to run the nodes, mostly suitable for testing networks with 2-3 nodes, since in this case its opening up a lot of terminals at times the command to run the node gets executed before the terminal window has opened.
+A workaround is to open your terminal, change directory into `build/nodes/<node>`, and run the following command:
 
-There are currently 5 nodes working with the app that needs being started
+```
+java -jar corda.jar
+```
+
+You will need to run this for each node.
+
+There are currently 5 nodes working with the app that need to be started:
 
 * Client1
 * Client2
@@ -158,7 +162,7 @@ the other nodes on the network:
            platformVersion: 4,
            serial: 1569919956353
          }
-
+    
     Tue Oct 01 11:55:19 EEST 2019>>> 
 
 You can find out more about the node shell [here](https://docs.corda.net/shell.html).
@@ -208,7 +212,7 @@ The static webpage is served on:
 
  To process an event like Execution for example you should create a POST request to http://localhost:10050 or http://localhost:10060 depending on which party is the flow initializer with the JSONs provided in "allSampleFiles/2.4.14" ("UC1_block_execute_BT1.json") directory in the project
   to /execution 
- 
+
 * List all execution events
 
 You can get all execution states on http://localhost:10050/execution-states or by running the getExecutions() function from the CdmVaultQuery
@@ -221,4 +225,5 @@ You should extend this template as follows:
     * Add your own flow definitions under `workflows/src/main/kotlin/`
     * Extend or replace the client and webserver under `clients/src/main/kotlin/`
 
-    
+
+​    
