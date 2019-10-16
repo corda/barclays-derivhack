@@ -61,11 +61,11 @@ abstract class BaseEventTest(val samplesDirectory: String = "jsons") {
         //look closer at the states
         val executionState = tx.outputStates.find { it is ExecutionState } as ExecutionState
         assertNotNull(executionState)
-        assertEquals(listOf(party2, party3), executionState.participants)
+        assertEquals(listOf(party1, party2, party3), executionState.participants)
 
         //look closer at the commands
         assertTrue(tx.commands.get(0).value is CDMEvent.Commands.Execution)
-        assertEquals(listOf(party2.owningKey, party3.owningKey), tx.commands.get(0).signers)
+        assertEquals(listOf(party1.owningKey, party2.owningKey, party3.owningKey), tx.commands.get(0).signers)
     }
 
     protected fun sendAllocationAndCheckAssertions(jsonFileName: String) {
@@ -103,9 +103,9 @@ abstract class BaseEventTest(val samplesDirectory: String = "jsons") {
 //        checkIdentiferIsOnTrade(cdmExecutionStateOutputStateTwo, "ST2K6U8RHX7MZ", "3vqQOOnXah+v+Cwkdh/hSyDP7iD6lLGqRDW/500GvjU=")
 
         //look closer at the commands
-        assertEquals(listOf(party2.owningKey, party3.owningKey), tx.commands.get(0).signers)
-        assertEquals(listOf(party1.owningKey, party2.owningKey), tx.commands.get(1).signers)
-        assertEquals(listOf(party1.owningKey, party2.owningKey), tx.commands.get(2).signers)
+        assertEquals(listOf(party1.owningKey, party2.owningKey, party3.owningKey), tx.commands.get(0).signers)
+        assertEquals(listOf(party1.owningKey, party2.owningKey, party3.owningKey), tx.commands.get(1).signers)
+        assertEquals(listOf(party1.owningKey, party2.owningKey, party3.owningKey), tx.commands.get(2).signers)
     }
 
     //confirming things
