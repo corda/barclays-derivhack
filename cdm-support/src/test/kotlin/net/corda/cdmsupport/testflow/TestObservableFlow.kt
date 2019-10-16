@@ -23,6 +23,6 @@ class ReceiveObservableFlow(private val otherSideSession: FlowSession) : FlowLog
     override fun call() {
         // Start the matching side of SendTransactionFlow above, but tell it to record all visible states even
         // though they (as far as the node can tell) are nothing to do with us.
-        subFlow(ReceiveTransactionFlow(otherSideSession, false, StatesToRecord.ALL_VISIBLE))
+        subFlow(ReceiveTransactionFlow(otherSideSession, true, StatesToRecord.ALL_VISIBLE))
     }
 }
