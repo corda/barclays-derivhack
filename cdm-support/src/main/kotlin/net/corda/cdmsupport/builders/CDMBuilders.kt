@@ -1,4 +1,5 @@
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.google.inject.Guice
 import com.regnosys.rosetta.common.hashing.*
 import com.regnosys.rosetta.common.serialisation.RosettaObjectMapper
 import com.rosetta.model.lib.RosettaModelObject
@@ -10,6 +11,7 @@ import com.rosetta.model.lib.records.DateImpl
 import net.corda.cdmsupport.eventparsing.parseEventFromJson
 import net.corda.cdmsupport.eventparsing.serializeCdmObjectIntoJson
 import org.isda.cdm.*
+import org.isda.cdm.functions.Allocate
 import org.isda.cdm.metafields.*
 import org.isda.cdm.rosettakey.SerialisingHashFunction
 import java.io.File
@@ -41,6 +43,7 @@ open class CDMBuilders {
     val affirmation = affirmationBuilder.build()
 
     fun executionAddParty(execution: Execution, parties: MutableSet<Party>): Execution {
+
         val executionBuilder = execution.toBuilder()
         parties.forEach {
             executionBuilder.addParty(ReferenceWithMetaParty.ReferenceWithMetaPartyBuilder()
@@ -451,6 +454,14 @@ open class CDMBuilders {
         //TODO
         return Event.EventBuilder().build()
 
+    }
+
+    fun buildAllocationEvent(execution: Execution, allocationInstructions: String, previousEvent: Event): Event {
+        val instructions = buildAllocationInstruction(allocationInstructions)
+        val injector = Guice.createInjector(CordaRuntimeModule())
+        val allocateFun = injector.getInstance(Allocate::class.java);
+        val event = allocateFun.evaluate(execution, instructions, previousEvent)
+        return event
     }
 
     fun buildParties(): MutableMap<String, Party> {
