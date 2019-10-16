@@ -76,5 +76,17 @@ task runServerC1(type: JavaExec, dependsOn: assemble) {
     args '--server.port=10060', '--config.rpc.host=localhost', '--config.rpc.port=10006', '--config.rpc.username=user1', '--config.rpc.password=test', '--config.sshd.port=2224'
 }
 
+task runServerC2(type: JavaExec, dependsOn: assemble) {
+    classpath = sourceSets.main.runtimeClasspath
+    main = 'com.derivhack.webserver.ServerKt'
+    args '--server.port=10070', '--config.rpc.host=localhost', '--config.rpc.port=10018', '--config.rpc.username=user1', '--config.rpc.password=test', '--config.sshd.port=2224'
+}
+
+task runServerC3(type: JavaExec, dependsOn: assemble) {
+    classpath = sourceSets.main.runtimeClasspath
+    main = 'com.derivhack.webserver.ServerKt'
+    args '--server.port=10080', '--config.rpc.host=localhost', '--config.rpc.port=10021', '--config.rpc.username=user1', '--config.rpc.password=test', '--config.sshd.port=2224'
+}
+
 
 

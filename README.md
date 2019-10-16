@@ -107,6 +107,8 @@ The better way to run the nodes is the use the java -jar corda.jar command by go
 There are currently 5 nodes working with the app that needs being started
 
 * Client1
+* Client2
+* Client3
 * Broker1
 * Broker2
 * Notary
@@ -178,6 +180,12 @@ the username `user2` and the password `test`, which is Broker1 Corda Party node,
 Run the `runServerC1` Gradle task. By default, it connects to the node with RPC address `localhost:10006` with 
 the username `user1` and the password `test`, which is Client1 Corda Party node, and serves the webserver on port `localhost:10060`.
 
+Run the `runServerC2` Gradle task. By default, it connects to the node with RPC address `localhost:10006` with 
+the username `user1` and the password `test`, which is Client2 Corda Party node, and serves the webserver on port `localhost:10060`.
+
+Run the `runServerC3` Gradle task. By default, it connects to the node with RPC address `localhost:10006` with 
+the username `user1` and the password `test`, which is Client3 Corda Party node, and serves the webserver on port `localhost:10060`.
+
 * Running the webserver via IntelliJ
 
 Run the `Run Server` run configuration. By default, it connects to the node with RPC address `localhost:10009` 
@@ -192,6 +200,9 @@ The static webpage is served on:
 
     http://localhost:10050 - Broker1
     http://localhost:10060 - Client1
+    http://localhost:10070 - Client2
+    http://localhost:10080 - Client3
+
 
 * Processing an Event 
 
