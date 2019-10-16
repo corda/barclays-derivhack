@@ -29,7 +29,7 @@ fun main(args: Array<String>) {
 
 open class CDMBuilders {
 
-    var allocationEvent = parseEventFromJson(readFileDirectlyAsText("/home/nbonev/project/Derivhack/cdm-support/src/main/resources/UC2_Allocation_Trade_AT1.json"))
+    var allocationEvent = parseEventFromJson(this.javaClass.getResource("UC2_Allocation_Trade_AT1.json").readText())
 
     val allocationExecutions = allocationEvent.primitive.allocation.flatMap { it.after.allocatedTrade.map { trade -> trade.execution } }
     val clientReferences = partyReferenceByRole(allocationExecutions[0].partyRole, PartyRoleEnum.CLIENT)
@@ -476,7 +476,6 @@ open class CDMBuilders {
                 buildPartyRole(PartyRoleEnum.BUYER, parties.getValue("Broker1")),
                 buildPartyRole(PartyRoleEnum.COUNTERPARTY, parties.getValue("Broker2")),
                 buildPartyRole(PartyRoleEnum.SELLER, parties.getValue("Broker2"))
-
         )
     }
 
@@ -523,8 +522,6 @@ open class CDMBuilders {
 
         return PortfolioInstructions(date, party, security)
     }
-
-
 }
 
 
